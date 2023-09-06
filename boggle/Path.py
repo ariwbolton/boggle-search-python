@@ -2,7 +2,7 @@ from .Cell import Cell
 
 
 class Path:
-    def __init__(self, start: Cell = None):
+    def __init__(self, *, start: Cell = None):
         assert start is not None
 
         self.start = start
@@ -23,3 +23,9 @@ class Path:
 
     def seen(self, cell: Cell):
         return cell in self.cells_set
+
+    def current(self):
+        return self.cells[-1]
+
+    def word(self):
+        return "".join(cell.letter for cell in self.cells)

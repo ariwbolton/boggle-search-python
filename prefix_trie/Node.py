@@ -18,31 +18,38 @@ class Node:
             self.get_child(word).insert_word(word[1:])
 
     def is_word(self, word: str):
-        if len(word) == 0 and self.is_terminal:
-            return True
-        elif self.has_child(word):
-            return self.get_child(word).is_word(word[1:])
-        else:
-            # Not a terminal and no child means this isn't a word
+        node = self.get_node(word)
+
+        if node is None:
             return False
 
+        return self.is_terminal
+
     def is_prefix(self, word: str):
+        node = self.get_node(word)
+
+        if node is None:
+            return False
+
         # If no letters left, this is the last node we'll check
         # Just need to know if this is terminal or if there are children
-        if len(word) == 0 and (self.is_terminal or len(self.children) > 0):
-            return True
+        return node.is_terminal or len(node.children) > 0
+
+    def get_node(self, word: str) -> 'Node':
+        if len(word) == 0:
+            return self
         elif self.has_child(word):
-            return self.get_child(word).is_prefix(word[1:])
+            return self.get_child(word).get_node(word[1:])
         else:
-            # Letters left in the word and no child and not terminal means this isn't a valid prefix
-            return False
+            # No valid path for this word
+            return None
 
     def has_child(self, word):
         assert len(word) > 0, "Tried to find child for word with no characters"
 
         return word[0] in self.children
 
-    def get_child(self, word):
+    def get_child(self, word) -> 'Node':
         assert len(word) > 0, "Tried to get child for word with no characters"
 
         return self.children[word[0]]

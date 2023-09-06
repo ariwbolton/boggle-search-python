@@ -1,14 +1,18 @@
 from random import choices
 from typing import List
+import itertools
 
 from .CellsBuilder import CellsBuilder
 
 
 class Board:
     def __init__(self, letters: List[List[str]]):
-        self.cells = CellsBuilder().build_cells(letters)
-        self.height = len(self.cells)
-        self.width = len(self.cells[0])
+        self.cell_grid = CellsBuilder().build_cells(letters)
+        self.height = len(self.cell_grid)
+        self.width = len(self.cell_grid[0])
+
+    def cells(self):
+        return itertools.chain(*self.cell_grid)
 
     @staticmethod
     def random(size=4):
@@ -24,4 +28,4 @@ class Board:
         return Board(letters)
 
     def __repr__(self):
-        return "\n".join("".join(cell.letter for cell in row).upper() for row in self.cells)
+        return "\n".join("".join(cell.letter for cell in row).upper() for row in self.cell_grid)
