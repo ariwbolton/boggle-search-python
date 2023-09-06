@@ -1,22 +1,14 @@
 from random import choices
 from typing import List
 
+from .CellsBuilder import CellsBuilder
+
 
 class Board:
     def __init__(self, letters: List[List[str]]):
-        self.validate_letters(letters)
-
-        self.letters = letters
-        self.height = len(letters)
-        self.width = len(letters[0])
-
-
-    def validate_letters(self, letters):
-        height = len(letters)
-        assert height > 0, "Height of board must be nonzero"
-
-        for row in letters:
-            assert height == len(row), "All rows must have same length as height"
+        self.cells = CellsBuilder().build_cells(letters)
+        self.height = len(self.cells)
+        self.width = len(self.cells[0])
 
     @staticmethod
     def random(size=4):
@@ -32,4 +24,4 @@ class Board:
         return Board(letters)
 
     def __repr__(self):
-        return "\n".join("".join(row).upper() for row in self.letters)
+        return "\n".join("".join(cell.letter for cell in row).upper() for row in self.cells)
