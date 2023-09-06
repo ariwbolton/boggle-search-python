@@ -1,6 +1,4 @@
 """
-# boggle-search-python
-
 Includes generating boards, loading existing boards, and searching for words
 """
 
