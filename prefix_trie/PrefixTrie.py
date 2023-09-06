@@ -19,3 +19,9 @@ class PrefixTrie:
             lines = [line.strip().lower() for line in f.readlines()]
 
         return PrefixTrie.from_words(lines)
+
+    def is_word(self, word: str):
+        return self.root.is_word(word.lower())
+
+    def is_prefix(self, word: str):
+        return self.root.is_prefix(word.lower())
