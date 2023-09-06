@@ -1,16 +1,13 @@
-# This is a sample Python script.
+"""
+# boggle-search-python
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+Includes generating boards, loading existing boards, and searching for words
+"""
 
 
-# Press the green button in the gutter to run the script.
+def run():
+    print('Hello from python!')
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    run()
