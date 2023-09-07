@@ -1,2 +1,1 @@
-from .Board import Board
-from .WordFinder import WordFinder
+from .GameManager import GameManager
