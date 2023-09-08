@@ -1,7 +1,9 @@
+import os
+from timeit import default_timer as timer
+
 from prefix_trie import PrefixTrie
 from .Board import Board
 from .WordFinder import WordFinder
-from timeit import default_timer as timer
 
 
 class GameManager:
@@ -9,7 +11,7 @@ class GameManager:
         self.timings = {}
 
     def run(self):
-        dictionary = self.load_dictionary()
+        dictionary = self.get_dictionary()
 
         board = self.create_board()
 
@@ -17,16 +19,31 @@ class GameManager:
 
         self.report_words(words)
 
-    def load_dictionary(self):
-        print("Loading dictionary... ", end="")
+    def get_dictionary(self, *, force_rebuild=False):
+        is_dictionary_ready = not force_rebuild and os.path.exists("data/dictionary.pkl")
+        loading_str = "Loading dictionary" if is_dictionary_ready else "Building dictionary"
+
+        print(f"{loading_str}...", end="")
         start = timer()
 
-        dictionary = PrefixTrie.from_file("words")
+        dictionary = PrefixTrie.from_pkl_file("data/dictionary.pkl") if is_dictionary_ready else PrefixTrie.from_file("data/words")
 
         end = timer()
         print("Done")
 
-        self.timings["load_dictionary"] = end - start
+        timings_key = "load_dictionary" if is_dictionary_ready else "build_dictionary"
+        self.timings[timings_key] = end - start
+
+        if not is_dictionary_ready:
+            print("Saving dictionary...", end="")
+            start_pkl = timer()
+
+            dictionary.to_pkl_file("data/dictionary.pkl")
+
+            end_pkl = timer()
+
+            print("Done")
+            self.timings["save_dictionary"] = end_pkl - start_pkl
 
         return dictionary
 

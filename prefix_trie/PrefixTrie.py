@@ -1,4 +1,7 @@
+import pickle
+
 from .Node import Node
+from .WordContainer import WordContainer
 
 class PrefixTrie:
     def __init__(self):
@@ -9,7 +12,7 @@ class PrefixTrie:
         trie = PrefixTrie()
 
         for word in words:
-            trie.root.insert_word(word)
+            trie.root.insert_word(WordContainer(word))
 
         return trie
 
@@ -19,6 +22,17 @@ class PrefixTrie:
             lines = [line.strip().lower() for line in f.readlines()]
 
         return PrefixTrie.from_words(lines)
+
+    @staticmethod
+    def from_pkl_file(filename: str):
+        with open(filename, 'rb') as f:
+            trie = pickle.load(f)
+
+        return trie
+
+    def to_pkl_file(self, filename: str):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
 
     def is_word(self, word: str):
         return self.root.is_word(word.lower())

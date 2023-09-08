@@ -1,21 +1,25 @@
 from typing import Dict
 
+from .WordContainer import WordContainer
 
 class Node:
     def __init__(self):
         self.children: Dict[str, Node] = {}
         self.is_terminal = False
 
-
-    def insert_word(self, word):
-        if len(word) == 0:
+    def insert_word(self, word_container: WordContainer):
+        if word_container.remaining_length() == 0:
             self.is_terminal = True
         else:
             # TODO: use setdefault?
-            if not self.has_child(word):
-                self.create_child(word)
+            next_char = word_container.next_character()
 
-            self.get_child(word).insert_word(word[1:])
+            if not self.has_child(next_char):
+                self.create_child(next_char)
+
+            word_container.step()
+
+            self.get_child(next_char).insert_word(word_container)
 
     def is_word(self, word: str):
         node = self.get_node(word)
